@@ -27,6 +27,7 @@ line = a.readline()
 while line:
     x = apart(line)
     word_f(x)
+    print(x)
 
 
 
