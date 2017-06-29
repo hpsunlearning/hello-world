@@ -28,6 +28,7 @@ def find_value(s,file):
         if a.find(s) == 0:
             lt.append(a)
         line = IN.readline()
+#    In.close()
     return lt
 
 inf9 = open(infe9,"r",encoding = "UTF-8")
@@ -36,7 +37,21 @@ line = inf9.readline()
 while line:
     id1 = str(line)
     id1 = id1.strip('\n')
-    dict[id1] = find_value(id1,infe42)
+    a = find_value(id1,infe42)
+#    print(type(a))
+    d[id1] = a
     line = inf9.readline()
+inf9.close()
+
+    
+out = open("Count.txt","w",encoding='utf-8')
+
+for i in sorted(d.keys()):
+    a = i
+    out.writelines(a+'\n')
+    for j in range(len(d[i])):
+        out.writelines('\t'+d[i][j]+'\n')
+out.close()
+    
 
 
