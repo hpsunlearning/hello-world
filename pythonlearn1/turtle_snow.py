@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jun 16 09:49:42 2017
-
 @author: sunhp
+分型画雪花，函数对自身的迭代调用
 """
 
 import turtle
@@ -28,20 +28,17 @@ def koh(t,length):
     koh(t,length/3)
     t.rt(120)
     koh(t,length/3)
-    t.lt(60)    
+    t.lt(60)
     koh(t,length/3)
-    
+
 def snow(t,length):
     koh(t,length)
     t.rt(120)
     koh(t,length)
     t.rt(120)
-    koh(t,length)    
+    koh(t,length)
 
 bob = turtle.Turtle()
 bob.pd()
-
-
 snow(bob,100)
-
 turtle.mainloop()

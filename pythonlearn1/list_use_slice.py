@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jun 16 10:51:00 2017
-
 @author: sunhp
+汽车里程表问题，回文检测
+生日问题
 """
 
 """
@@ -22,7 +23,7 @@ for n in range(0,999999):
     while len(a) < 6:
         a = '0' + a
     t = a[2:]
-    if t != t[::-1]:
+    if t != t[::-1]:#回文判断的语句，[::]第三个是步长，-1是翻转
         continue
     b = str(n + 1)
     while len(b) < 6:
@@ -58,5 +59,3 @@ for c in range(15,50):
             continue
         number = number + 1
         print(ss,number,ms,c)
-        
-    

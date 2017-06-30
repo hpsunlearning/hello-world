@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jun 23 11:05:57 2017
-
 @author: sunhp
+构建文本的makov模型，基础是dict_use
 """
 
 import random
@@ -21,8 +21,8 @@ def makov_file(file,level=2,code="UTF-8-sig"):
 
 def apart(sr):
     sr = sr.strip()
-#    puc = list(string.punctuation + '—' + string.whitespace)
-    puc = list('—' + string.whitespace)    
+#    puc = list(string.punctuation + '—' + string.whitespace)#是否保留标点
+    puc = list('—' + string.whitespace)
     for i in list(puc):
         sr = sr.replace(i,' ',)
         sr = sr.strip()
@@ -31,7 +31,7 @@ def apart(sr):
         sr.remove('')
     return sr
 
-def makov(lst,mdic,level=2):
+def makov(lst,mdic,level=2):#构建makov链，lst是list，mdic是dict，level是前状态等级
     for i in range(len(lst)-level):
         mk1 = lst[i:i+level]
         mk2 = ''
@@ -59,20 +59,19 @@ def fwords(h):
         feq_word.append([i,feq])
     return feq_word
 
-def makov_table(mdic):
+def makov_table(mdic):#构建makov概率表
     mt = dict()
     for i in sorted(mdic.keys()):
         v = fwords(hist(mdic[i]))
         mt[i] = v
     return mt
 
-def getrword(lst):
+def getrword(lst):#按概率表生成词，lst是二维，词，累积词频
     n = random.randint(1,lst[-1][1])
     h = 0
     t = len(lst) - 1
     m = int((h + t) / 2)
-    while h < t:
-#        print(h,t,m)
+    while h < t:#二分法概率查找，高效
         if lst[m][1] == n:
             return lst[m][0]
         elif lst[m][1] < n:
@@ -89,7 +88,7 @@ def getrword(lst):
                 m = int((h + t) / 2)
     return lst[m][0]
 
-def creatpaper(n,first,mt,level=2):
+def creatpaper(n,first,mt,level=2):#生成文章
     a = ''
     for word in mt.keys():
         if word.startswith(first):
@@ -99,10 +98,10 @@ def creatpaper(n,first,mt,level=2):
         a = word
     for i in range(1,n):
         a = makovchain(a,mt,level=2)
-    
-    return a 
-    
-def makovchain(s,mt,level=2):
+
+    return a
+
+def makovchain(s,mt,level=2):#按makov概率表生成词
     lst = s.split()
     a = lst[-level:]
     b = ''
@@ -114,23 +113,20 @@ def makovchain(s,mt,level=2):
     else:
         c = random.choice(list(mt.keys()))
     s = s + ' ' + c
-    return s    
-    
-file = "C:\\Users\\sunhp\\Desktop\\Ulysses1.txt"
+    return s
+
+file = "Ulysses1.txt"
 mdic = makov_file(file,level=3,code="UTF-8-sig")
 mt = makov_table(mdic)
 a = creatpaper(20,"long",mt,level=3)
 
-
-
-
-
-
-#a = [['b', 2], ['c', 8], ['d', 13], ['e', 19], ['f', 22], ['g', 25], ['h', 31], ['i', 40]]
-#x = getrword(31,a)
-#print(x)
-#a = "a a b a a b c a a c a a d b c d d c c d a b b b b d d c c c a c d b c d"
+"""测试
+a = [['b', 2], ['c', 8], ['d', 13], ['e', 19], ['f', 22], ['g', 25], ['h', 31], ['i', 40]]
+x = getrword(31,a)
+print(x)
+a = "a a b a a b c a a c a a d b c d d c c d a b b b b d d c c c a c d b c d"
 """
+"""测试
 a = 'gurgling face that blessed him, equine in its length, and at the light'
 b = apart(a)
 mdic = dict()
