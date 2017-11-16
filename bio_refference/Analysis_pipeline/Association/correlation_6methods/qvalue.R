@@ -1,0 +1,6 @@
+dat<-read.table("All.rfcv.combine.txt.new")
+pdf("All.rfcv.combine.p.distribution.pdf")
+hist(dat$V3,breaks=20,xlab="P value",main="P distribution")
+dev.off()
+dat$q=p.adjust(dat$V3,method="BH")
+write.table(dat,"All.rfcv.combine.txt.new.q",row.names=F,col.names=F,sep="\t",quote=F)

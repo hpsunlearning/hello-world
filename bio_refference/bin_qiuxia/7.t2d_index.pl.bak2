@@ -1,0 +1,55 @@
+#!/usr/bin/perl -w
+use strict;
+use FindBin qw/$Bin/;
+
+my $geneList = "$Bin/../data/T2D.50.gene.marker";
+my $bin = "$Bin/Health_index.R";
+my $Rscript = "/ifs3/solexa/data/heyuan/R/bin/Rscript";
+
+print STDERR "$geneList\n";
+die "usage: perl $0 gene.profile org_sample_gene.profile total_gene.profile sample.num target_gene.pro\n" unless(@ARGV == 5);
+my ($pro,$org_pro,$total_pro,$sampleNum,$targetPro) = @ARGV;
+
+my (%abun,%gene);
+############ total gene profile #################
+open INO,$org_pro or die "$!\n";
+while(<INO>){
+        chomp;
+        my @temp = split /\t/;
+        my $mark = shift @temp;
+        my $mess = join "\t",@temp;
+        $abun{$mark} = $mess;
+}
+close INO;
+
+open INP,$pro or die "$!\n";
+open OUT,">$total_pro" or die "$!\n";
+while(<INP>){
+        chomp;
+        my @temp = split /\t/;
+        print OUT "$_\t$abun{$temp[0]}\n";
+}
+close INP;
+close OUT;
+############target gene profile ###################
+open ING,$geneList or die "$!\n";
+while(<ING>){
+    chomp;
+    my @temp = split;
+    $gene{$temp[0]} = 1;
+}
+close ING;
+
+open INP,"<$total_pro" or die "$!\n";
+open OUT,">$targetPro" or die "$!\n";
+my $head = <INP>;
+print OUT $head;
+while(<INP>){
+    chomp;
+    my @temp = split /\t+/;
+    print OUT $_."\n" if(exists $gene{$temp[0]});
+}
+close INP;
+close OUT;
+#################################################
+`$Rscript $bin $targetPro $geneList $sampleNum "T2D"`;

@@ -1,0 +1,1 @@
+perl /ifs5/PC_MICRO_META/PRJ/MetaSystem/analysis_flow/bin/program/annotation/IMG/Bin/IMG.annotation_v1.pl -q /ifs5/PC_MICRO_META/PRJ/MetaPrj/411_Sweden_KU39_Geneset4/411.Sweden_KU39_Geneset4/annotate/MERGE_after_IMG/Diet_4.3M.uniqGeneset.fa 

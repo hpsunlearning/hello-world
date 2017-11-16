@@ -1,0 +1,34 @@
+#!/usr/bin/perl -w
+use strict;
+use FindBin qw/$Bin/;
+
+my $geneList = "$Bin/../data/T2D.50.gene.marker";
+my $bin = "$Bin/Health_index.R";
+my $Rscript = "/ifs3/solexa/data/heyuan/R/bin/Rscript";
+
+print STDERR "$geneList\n";
+die "usage: perl $0 gene.pro sample.num target_gene.pro\n" unless(@ARGV == 3);
+my ($genePro,$sampleNum,$targetPro) = @ARGV;
+
+my (%gene);
+open ING,$geneList or die "$!\n";
+while(<ING>){
+    chomp;
+    my @temp = split;
+    $gene{$temp[0]} = 1;
+}
+close ING;
+
+open INP,$genePro or die "$!\n";
+open OUT,">$targetPro" or die "$!\n";
+my $head = <INP>;
+print OUT $head;
+while(<INP>){
+    chomp;
+    my @temp = split /\t+/;
+    print OUT $_."\n" if(exists $gene{$temp[0]});
+}
+close INP;
+close OUT;
+
+`$Rscript $bin $targetPro  $geneList $sampleNum "T2D"`;

@@ -1,0 +1,30 @@
+file <- commandArgs(T)
+pdf("T2D_renew.pdf",width=20,height=10,bg="#4682B4")
+dat <- read.table(file[1],head=T,row.names=1,sep="\t")
+dat_case<-read.table(file[2])
+quan <- quantile(dat[1:198,1],c(0.05,0.95))
+m <- density(dat[1:198,1],from=quan[1],to=quan[2])
+m1 <- density(dat[1:198,1])
+m2<-dat[1:198,1]
+par(bg="#AAAAAA",fg="#FFFFFF")
+plot(m1,main="Type 2 diabetes index distribution",xlab="T2D INDEX",ylab="percentage in reference",mgp=c(2,0.5,0),ylim=c(0,0.75),xaxs="i",yaxs="i",yaxt="n",cex=2,cex.main=2,cex.axis=1.5,cex.lab=1.5,xaxs="i",yaxs="i",col.axis="white",col.sub="white",col.main="white",col.lab="white")
+for(i in seq(255,0,-1)){polygon(c(-8,(2*i-408)/51,(2*i-408)/51,-8),c(-8,0*i,0.75,0.75),col=rgb(0.008,0.3,(1-i/255)*0.35+0.25,0.6),border=NA)}
+polygon(c(min(m1$x),m1$x,max(m1$x)),c(0,m1$y,0),col="#9AC0CD",border="NA")
+lines(m1) 
+lines(c(m$x[1],m$x[1]),c(0,m$y[1]),col="#EE0000",lwd=4,lty=2)
+lines(c(m$x[512],m$x[512]),c(0,m$y[512]),col="#EE0000",lwd=4,lty=2)
+sample <- dat_case[1,2]
+if(dat_case[1,2] > max(m2)){
+	 sample <- 1.6}
+abline(v=sample,col="#8B008B",lty=2,lwd=4)
+abline(h=0.15,col="#6E7B8B")
+abline(h=0.3,col="#6E7B8B")
+abline(h=0.45,col="#6E7B8B")
+abline(h=0.6,col="#6E7B8B")
+text(m$x[1]-0.03,m$y[1]+0.05,"5%",cex=2)
+text(m$x[512]+0.3,m$y[512]+0.02,"95%",cex=2)
+arrows(m$x[1]+0.25,m$y[1]/2,m$x[1],m$y[1]/2,col="#454545",cex=1.8)
+arrows(m$x[512]-0.25,m$y[1]/2,m$x[512],m$y[1]/2,col="#454545",cex=1.8)
+text((m$x[512]-m$x[1])/2+m$x[1],m$y[1]/2,paste("reference range(",round(m$x[1],2),"~",round(m$x[512],2),")",sep=""),cex=1.5,col="#454545")
+text(m$x[1]-0.6,0.65,paste(round(100*mean(dat_case[1,2]>m2)),"%",sep=""),cex=2.5)
+text(m$x[1]-0.3,0.65,paste("The value of your type 2 diabetes index is ",round(dat_case[1,2],2),"\nand is higher than ",round(100*mean(dat_case[1,2]>m2)),"% of the population",sep=""),adj=0,cex=1.8)

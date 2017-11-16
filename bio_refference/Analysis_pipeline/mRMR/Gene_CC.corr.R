@@ -1,0 +1,5 @@
+argv <- commandArgs(T)
+dat <- read.table(argv[1])
+config <- read.table(argv[2])
+corr <- apply(dat,1,function(x){cor(as.numeric(x),as.numeric(config[,2]),method="kendall")})
+write.table(corr,argv[3],quote=F,sep="\t",row.names=rownames(dat),col.names=F)

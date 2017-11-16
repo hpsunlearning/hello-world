@@ -1,0 +1,1 @@
+Rs ./06.boxplot.R /ifs1/ST_META/USER/dingqiuxia/meta_test/RHUMbpmMHAAADAAPro-1_indir_new_new/false_9.9M_test/anti/t2samples_198sample_anti.pro /ifs1/ST_META/USER/dingqiuxia/Meta/meta_hiseq_flow/data/Anti.name 1 /ifs1/ST_META/USER/dingqiuxia/Meta/meta_hiseq_flow/data/common.anti ./
